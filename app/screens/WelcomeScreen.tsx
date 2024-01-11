@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {GestureResponderEvent, StyleSheet, View} from 'react-native';
 import React from 'react';
 import Swiper from 'react-native-swiper';
 import WelcomeCard from '../components/cards/WelcomeCard';
@@ -6,6 +6,7 @@ import {Button} from 'react-native-paper';
 import Welcome1 from '../assets/svgs/Welcome1';
 import Welcome2 from '../assets/svgs/Welcome2';
 import Welcome3 from '../assets/svgs/Welcome3';
+import {useGlobalExampleState} from '../store/exampleStore';
 
 const data = [
   {
@@ -29,6 +30,17 @@ const data = [
 ];
 
 const WelcomeScreen = () => {
+  const state = useGlobalExampleState();
+  function signUp(e: GestureResponderEvent): void {
+    console.log('signUp: ', e.isDefaultPrevented());
+    state.increment(2);
+  }
+
+  function login(e: GestureResponderEvent): void {
+    console.log('login: ', e.isDefaultPrevented());
+    state.decrement(2);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapperContainer}>
@@ -53,15 +65,15 @@ const WelcomeScreen = () => {
       <View style={styles.buttonsContainer}>
         <Button
           mode="contained"
-          onPress={() => console.log('Pressed')}
+          onPress={signUp}
           style={[styles.button, styles.active]}
           labelStyle={[styles.buttonLabel, styles.activeButtonLabel]}>
-          Sign Up
+          Sign Up {state.count}
         </Button>
 
         <Button
           mode="contained"
-          onPress={() => console.log('Pressed')}
+          onPress={login}
           style={styles.button}
           labelStyle={styles.buttonLabel}>
           Login
