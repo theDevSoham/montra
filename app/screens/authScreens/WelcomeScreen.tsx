@@ -1,12 +1,13 @@
-import {GestureResponderEvent, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import Swiper from 'react-native-swiper';
-import WelcomeCard from '../components/cards/WelcomeCard';
+import WelcomeCard from '../../components/cards/WelcomeCard';
 import {Button} from 'react-native-paper';
-import Welcome1 from '../assets/svgs/Welcome1';
-import Welcome2 from '../assets/svgs/Welcome2';
-import Welcome3 from '../assets/svgs/Welcome3';
-import {useGlobalExampleState} from '../store/exampleStore';
+import Welcome1 from '../../assets/svgs/Welcome1';
+import Welcome2 from '../../assets/svgs/Welcome2';
+import Welcome3 from '../../assets/svgs/Welcome3';
+import {useNavigation} from '@react-navigation/native';
+// import {useGlobalAuthState} from '../store/authStore';
 
 const data = [
   {
@@ -30,15 +31,15 @@ const data = [
 ];
 
 const WelcomeScreen = () => {
-  const state = useGlobalExampleState();
-  function signUp(e: GestureResponderEvent): void {
-    console.log('signUp: ', e.isDefaultPrevented());
-    state.increment(2);
+  // const authState = useGlobalAuthState();
+  const navigation = useNavigation();
+  function signUp(): void {
+    // authState.setLoggedIn(true);
+    navigation.navigate('SignUp');
   }
 
-  function login(e: GestureResponderEvent): void {
-    console.log('login: ', e.isDefaultPrevented());
-    state.decrement(2);
+  function login(): void {
+    // authState.setLoggedIn(true);
   }
 
   return (
@@ -64,14 +65,16 @@ const WelcomeScreen = () => {
 
       <View style={styles.buttonsContainer}>
         <Button
+          icon="human-greeting"
           mode="contained"
-          onPress={signUp}
           style={[styles.button, styles.active]}
+          onPress={signUp}
           labelStyle={[styles.buttonLabel, styles.activeButtonLabel]}>
-          Sign Up {state.count}
+          Sign Up
         </Button>
 
         <Button
+          icon="login"
           mode="contained"
           onPress={login}
           style={styles.button}
@@ -125,10 +128,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: '100%',
-    height: 56,
-    justifyContent: 'center',
-    alignItems: 'center',
     borderRadius: 16,
     backgroundColor: '#EEE5FF',
   },
@@ -140,6 +139,7 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontSize: 18,
     color: '#7F3DFF',
+    paddingVertical: 5,
   },
 
   activeButtonLabel: {

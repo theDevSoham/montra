@@ -22,6 +22,9 @@ const App = () => {
       primary: 'tomato',
       secondary: 'yellow',
     },
+
+    fontSizeHeader: 18,
+    fontFamilyHeader: 'Inter',
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -37,6 +40,5 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
   },
 });

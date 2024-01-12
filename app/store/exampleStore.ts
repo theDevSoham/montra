@@ -20,7 +20,10 @@ export const useGlobalExampleState = () => {
   const state = useState(exampleState);
 
   return {
+    // getters
     count: state.count.get(),
+
+    // setters/mutators
     increment: (num?: number) => {
       state.count.set(c => c + (num || 1));
     },
