@@ -7,6 +7,7 @@ import Welcome1 from '../../assets/svgs/Welcome1';
 import Welcome2 from '../../assets/svgs/Welcome2';
 import Welcome3 from '../../assets/svgs/Welcome3';
 import {useNavigation} from '@react-navigation/native';
+import MontraButton from '../../components/buttons/MontraButton';
 // import {useGlobalAuthState} from '../store/authStore';
 
 const data = [
@@ -64,23 +65,13 @@ const WelcomeScreen = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <Button
+        <MontraButton
           icon="human-greeting"
-          mode="contained"
-          style={[styles.button, styles.active]}
           onPress={signUp}
-          labelStyle={[styles.buttonLabel, styles.activeButtonLabel]}>
-          Sign Up
-        </Button>
-
-        <Button
-          icon="login"
-          mode="contained"
-          onPress={login}
-          style={styles.button}
-          labelStyle={styles.buttonLabel}>
-          Login
-        </Button>
+          text="Sign Up"
+          active
+        />
+        <MontraButton icon="login" onPress={login} text="Login" />
       </View>
     </View>
   );
