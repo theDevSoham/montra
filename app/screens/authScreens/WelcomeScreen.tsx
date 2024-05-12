@@ -2,7 +2,6 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import Swiper from 'react-native-swiper';
 import WelcomeCard from '../../components/cards/WelcomeCard';
-import {Button} from 'react-native-paper';
 import Welcome1 from '../../assets/svgs/Welcome1';
 import Welcome2 from '../../assets/svgs/Welcome2';
 import Welcome3 from '../../assets/svgs/Welcome3';
@@ -69,7 +68,10 @@ const WelcomeScreen = () => {
           icon="human-greeting"
           onPress={signUp}
           text="Sign Up"
-          active
+          colors={{
+            buttonColor: '#7F3DFF',
+            textColor: '#FFFFFF',
+          }}
         />
         <MontraButton icon="login" onPress={login} text="Login" />
       </View>

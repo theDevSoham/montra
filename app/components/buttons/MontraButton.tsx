@@ -6,22 +6,33 @@ interface MontraButton {
   icon?: string;
   onPress: (event: GestureResponderEvent) => void;
   text: string;
-  active?: boolean;
+  disabled?: boolean;
+  colors?: {
+    buttonColor: string;
+    textColor: string;
+  };
 }
 
 const MontraButton: React.FC<MontraButton> = ({
   icon,
   onPress,
   text,
-  active = false,
+  disabled = false,
+  colors = {
+    buttonColor: '#EEE5FF',
+    textColor: '#7F3DFF',
+  },
 }) => {
   return (
     <Button
       icon={icon}
       mode="contained"
       onPress={onPress}
-      style={[styles.button, active ? styles.active : {}]}
-      labelStyle={[styles.buttonLabel, active ? styles.activeButtonLabel : {}]}>
+      buttonColor={colors.buttonColor}
+      textColor={colors.textColor}
+      disabled={disabled}
+      style={styles.button}
+      labelStyle={styles.buttonLabel}>
       {text}
     </Button>
   );
@@ -33,20 +44,10 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     borderRadius: 16,
-    backgroundColor: '#EEE5FF',
-  },
-
-  active: {
-    backgroundColor: '#7F3DFF',
   },
 
   buttonLabel: {
     fontSize: 18,
-    color: '#7F3DFF',
     paddingVertical: 5,
-  },
-
-  activeButtonLabel: {
-    color: '#FFFFFF',
   },
 });

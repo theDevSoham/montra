@@ -13,8 +13,21 @@ import MontraCheckbox from '../../components/checkboxes/MontraCheckbox';
 import MontraButton from '../../components/buttons/MontraButton';
 import GoogleButton from '../../components/buttons/GoogleButton';
 
+type FormDataType = {
+  name: string;
+  email: string;
+  password: string;
+  currentCheckState: boolean;
+};
+
 const SignUp = () => {
-  const [currentCheckState, setCurrentCheckState] = useState<boolean>(false);
+  // const [currentCheckState, setCurrentCheckState] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormDataType>({
+    name: '',
+    email: '',
+    password: '',
+    currentCheckState: false,
+  });
 
   const openTermsAndPrivacy = (e: GestureResponderEvent) => {
     e.preventDefault();
@@ -37,6 +50,10 @@ const SignUp = () => {
               placeholder="Enter your name"
               onChange={text => {
                 console.log('Name: ', text);
+                setFormData(prev => ({
+                  ...prev,
+                  name: text,
+                }));
               }}
             />
             <MontraTextInput
@@ -45,6 +62,10 @@ const SignUp = () => {
               placeholder="Enter Email"
               onChange={text => {
                 console.log('Email: ', text);
+                setFormData(prev => ({
+                  ...prev,
+                  email: text,
+                }));
               }}
             />
             <MontraTextInput
@@ -53,13 +74,22 @@ const SignUp = () => {
               placeholder="*****"
               onChange={text => {
                 console.log('Pass: ', text);
+                setFormData(prev => ({
+                  ...prev,
+                  password: text,
+                }));
               }}
             />
 
             <View style={styles.policiesContainer}>
               <MontraCheckbox
-                status={currentCheckState ? 'checked' : 'unchecked'}
-                onCheckPress={setCurrentCheckState}
+                status={formData.currentCheckState ? 'checked' : 'unchecked'}
+                onCheckPress={checkStatus =>
+                  setFormData(prev => ({
+                    ...prev,
+                    currentCheckState: checkStatus,
+                  }))
+                }
               />
               <Text style={styles.privacyText}>
                 By signing up, you agree to the{' '}
@@ -74,7 +104,11 @@ const SignUp = () => {
             <MontraButton
               onPress={() => console.log('Sign up')}
               text="Sign Up"
-              active
+              disabled={false}
+              colors={{
+                buttonColor: '#7F3DFF',
+                textColor: '#FFFFFF',
+              }}
             />
 
             <Text style={styles.optionText}>Or with</Text>
