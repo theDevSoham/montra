@@ -31,10 +31,8 @@ const data = [
 ];
 
 const WelcomeScreen = () => {
-  // const authState = useGlobalAuthState();
   const navigation = useNavigation();
   function signUp(): void {
-    // authState.setLoggedIn(true);
     navigation.navigate('SignUp');
   }
 

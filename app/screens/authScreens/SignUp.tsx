@@ -6,12 +6,14 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import MontraHeader from '../../components/Headers/MontraHeader';
 import MontraTextInput from '../../components/inputs/MontraTextInput';
 import MontraCheckbox from '../../components/checkboxes/MontraCheckbox';
 import MontraButton from '../../components/buttons/MontraButton';
 import GoogleButton from '../../components/buttons/GoogleButton';
+import {inject, observer} from 'mobx-react';
+import {IStoreProps} from '../../utils/types/StoreProps';
 
 type FormDataType = {
   name: string;
@@ -20,113 +22,117 @@ type FormDataType = {
   currentCheckState: boolean;
 };
 
-const SignUp = () => {
-  // const [currentCheckState, setCurrentCheckState] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormDataType>({
-    name: '',
-    email: '',
-    password: '',
-    currentCheckState: false,
-  });
+interface SignupProps extends IStoreProps {}
 
-  const openTermsAndPrivacy = (e: GestureResponderEvent) => {
-    e.preventDefault();
-    Linking.openURL('https://www.montra.com/terms');
-  };
+const SignUp: React.FC<SignupProps> = inject('store')(
+  observer(({store}) => {
+    // const [currentCheckState, setCurrentCheckState] = useState<boolean>(false);
+    const [formData, setFormData] = useState<FormDataType>({
+      name: '',
+      email: '',
+      password: '',
+      currentCheckState: false,
+    });
 
-  function login(): void {
-    // authState.setLoggedIn(true);
-  }
+    const openTermsAndPrivacy = (e: GestureResponderEvent) => {
+      e.preventDefault();
+      Linking.openURL('https://www.montra.com/terms');
+    };
 
-  return (
-    <>
-      <MontraHeader title="Sign Up" />
-      <View style={styles.container}>
-        <ScrollView keyboardShouldPersistTaps="handled">
-          <View style={styles.inputContainer}>
-            <MontraTextInput
-              inputType="text"
-              label="Name"
-              placeholder="Enter your name"
-              onChange={text => {
-                console.log('Name: ', text);
-                setFormData(prev => ({
-                  ...prev,
-                  name: text,
-                }));
-              }}
-            />
-            <MontraTextInput
-              inputType="text"
-              label="Email"
-              placeholder="Enter Email"
-              onChange={text => {
-                console.log('Email: ', text);
-                setFormData(prev => ({
-                  ...prev,
-                  email: text,
-                }));
-              }}
-            />
-            <MontraTextInput
-              inputType="password"
-              label="Password"
-              placeholder="*****"
-              onChange={text => {
-                console.log('Pass: ', text);
-                setFormData(prev => ({
-                  ...prev,
-                  password: text,
-                }));
-              }}
-            />
+    function login(): void {
+      // authState.setLoggedIn(true);
+    }
 
-            <View style={styles.policiesContainer}>
-              <MontraCheckbox
-                status={formData.currentCheckState ? 'checked' : 'unchecked'}
-                onCheckPress={checkStatus =>
+    return (
+      <>
+        <MontraHeader title="Sign Up" />
+        <View style={styles.container}>
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <View style={styles.inputContainer}>
+              <MontraTextInput
+                inputType="text"
+                label="Name"
+                placeholder="Enter your name"
+                onChange={text => {
+                  console.log('Name: ', text);
                   setFormData(prev => ({
                     ...prev,
-                    currentCheckState: checkStatus,
-                  }))
-                }
+                    name: text,
+                  }));
+                }}
               />
-              <Text style={styles.privacyText}>
-                By signing up, you agree to the{' '}
-                <Text style={styles.termsText} onPress={openTermsAndPrivacy}>
-                  Terms of Service and Privacy Policy
+              <MontraTextInput
+                inputType="text"
+                label="Email"
+                placeholder="Enter Email"
+                onChange={text => {
+                  console.log('Email: ', text);
+                  setFormData(prev => ({
+                    ...prev,
+                    email: text,
+                  }));
+                }}
+              />
+              <MontraTextInput
+                inputType="password"
+                label="Password"
+                placeholder="*****"
+                onChange={text => {
+                  console.log('Pass: ', text);
+                  setFormData(prev => ({
+                    ...prev,
+                    password: text,
+                  }));
+                }}
+              />
+
+              <View style={styles.policiesContainer}>
+                <MontraCheckbox
+                  status={formData.currentCheckState ? 'checked' : 'unchecked'}
+                  onCheckPress={checkStatus =>
+                    setFormData(prev => ({
+                      ...prev,
+                      currentCheckState: checkStatus,
+                    }))
+                  }
+                />
+                <Text style={styles.privacyText}>
+                  By signing up, you agree to the{' '}
+                  <Text style={styles.termsText} onPress={openTermsAndPrivacy}>
+                    Terms of Service and Privacy Policy
+                  </Text>
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.buttonsContainer}>
+              <MontraButton
+                onPress={() => console.log('Sign up')}
+                text="Sign Up"
+                disabled={false}
+                colors={{
+                  buttonColor: '#7F3DFF',
+                  textColor: '#FFFFFF',
+                }}
+              />
+
+              <Text style={styles.optionText}>Or with</Text>
+
+              <GoogleButton />
+
+              <Text style={[styles.optionText, styles.alertText]}>
+                Already have an account?{' '}
+                <Text style={styles.termsText} onPress={login}>
+                  Login
                 </Text>
               </Text>
             </View>
-          </View>
-
-          <View style={styles.buttonsContainer}>
-            <MontraButton
-              onPress={() => console.log('Sign up')}
-              text="Sign Up"
-              disabled={false}
-              colors={{
-                buttonColor: '#7F3DFF',
-                textColor: '#FFFFFF',
-              }}
-            />
-
-            <Text style={styles.optionText}>Or with</Text>
-
-            <GoogleButton />
-
-            <Text style={[styles.optionText, styles.alertText]}>
-              Already have an account?{' '}
-              <Text style={styles.termsText} onPress={login}>
-                Login
-              </Text>
-            </Text>
-          </View>
-        </ScrollView>
-      </View>
-    </>
-  );
-};
+          </ScrollView>
+        </View>
+      </>
+    );
+  }),
+);
 
 export default SignUp;
 

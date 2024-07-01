@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from '../screens/authScreens/WelcomeScreen';
 import SignUp from '../screens/authScreens/SignUp';
 import Home from '../screens/appScreens/Home';
-import {useGlobalAuthState} from '../store/authStore';
+import {Provider, inject, observer} from 'mobx-react';
+import rootStore from '../store';
+import {IStoreProps} from '../utils/types/StoreProps';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,12 +44,20 @@ const appStack = () => (
   </Stack.Navigator>
 );
 
+const Navigation: React.FC<IStoreProps> = inject('store')(
+  observer(({store}) => {
+    const isLoggedIn = !!store.authStore.jwt;
+
+    return <>{isLoggedIn ? appStack() : authStack()}</>;
+  }),
+);
+
 const AppNavigator = () => {
-  const authStates = useGlobalAuthState();
-  const {isLoggedIn} = authStates;
   return (
     <NavigationContainer>
-      {isLoggedIn ? appStack() : authStack()}
+      <Provider store={rootStore}>
+        <Navigation />
+      </Provider>
     </NavigationContainer>
   );
 };
